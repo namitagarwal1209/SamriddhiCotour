@@ -23,4 +23,22 @@
             margin: 0;
         }
     }
+
+    .register{
+        position: absolute;
+        right: 20px;
+        top:50;
+
+        li{
+            list-style-type: none;
+        }
+        
+        a{
+            color: black;
+            font-size: 1.8rem ;
+            text-decoration: none;
+            text-transform: uppercase;
+        }
+        
+    }
 }
