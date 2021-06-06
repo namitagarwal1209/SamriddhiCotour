@@ -49,8 +49,9 @@ class Signup extends Component {
             return;
         }
 
+        //if password matches then we'll add the data to our firebase db
         try{
-            const {user}= await auth.createUserWithEmailAndPassword(email,password)
+            const {user} = await auth.createUserWithEmailAndPassword(email,password)
 
             handleUserProfile(user, {displayName}) //look at the function definition. passing the userAuth and additional data
 
@@ -85,7 +86,7 @@ class Signup extends Component {
                             })}
                         </ul>
                     )}
-                    
+
                     <div className='formWrap'>
                         <form onSubmit = {this.handleFormSubmit}>
                             <FormInput
