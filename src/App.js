@@ -11,7 +11,7 @@ import {Switch, Route, Redirect} from 'react-router-dom';
 import MainLayout from './layouts/MainLayout';
 import Login from './pages/Login';
 
-
+//no user default
 const initialState = {
   currentUser : null
 };
@@ -30,7 +30,7 @@ class App extends Component {
 
   componentDidMount() {
     this.authListener = auth.onAuthStateChanged(async userAuth => {
-        if(userAuth){
+        if(userAuth){ //i.e if user
           const userRef = await handleUserProfile(userAuth); //calling the function
           userRef.onSnapshot(snapshot => { //updating the local state of application with snapshot
             this.setState({
@@ -48,7 +48,7 @@ class App extends Component {
     })
   }
 
-  componentWillUnmount() {
+  componentWillUnmount() { //to avoid memory leakage
     this.authListener();
   }
   
@@ -65,7 +65,7 @@ class App extends Component {
                 <Homepage />
               </MainLayout>
               )} />
-            <Route path='/registration' render = {() => (
+            <Route path='/registration' render = {() => currentUser ? <Redirect to = './' />:(
               <MainLayout currentUser = {currentUser}>
                 <Registration />
               </MainLayout>
