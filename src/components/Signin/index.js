@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import './style.scss';
 import Button from '../forms/Button';
-//import {signInWithGoogle} from './../../firebase/utils'
+import {signInWithGoogle} from './../../firebase/utils'
 
 class Signin extends Component {
 
@@ -19,7 +19,7 @@ class Signin extends Component {
                         <form onSubmit = {this.handleSubmit}>
                             <div className="socialSign">
                                 <div className='row'>
-                                    <Button >
+                                    <Button onClick =  {signInWithGoogle}>
                                         Sign In with Google
                                     </Button>
                                 </div>

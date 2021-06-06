@@ -1,13 +1,13 @@
 import React, {Component} from 'react';
 import './default.scss';
-import {auth} from './firebase/utils';
+import {auth, handleUserProfile} from './firebase/utils';
 //import Header from './components/header'
 
 //pages
 import Homepage from './pages/Homepage';
 import Registration from './pages/Registration';
 
-import {Switch, Route} from 'react-router-dom';
+import {Switch, Route, Redirect} from 'react-router-dom';
 import MainLayout from './layouts/MainLayout';
 import Login from './pages/Login';
 
@@ -25,15 +25,25 @@ class App extends Component {
        ...initialState
     };
   }
-/*
+
   authListener = null;
 
   componentDidMount() {
-    this.authListener = auth.onAuthStateChanged(userAuth => {
-      if (!userAuth) return;
-
+    this.authListener = auth.onAuthStateChanged(async userAuth => {
+        if(userAuth){
+          const userRef = await handleUserProfile(userAuth); //calling the function
+          userRef.onSnapshot(snapshot => { //updating the local state of application with snapshot
+            this.setState({
+              currentUser: {
+                id: snapshot.id,
+                ...snapshot.data() //all the data like email,etc that we stored 
+              }
+            })
+          })
+        }
+      //if there is no user
       this.setState({
-        currentUser: userAuth
+        ...initialState
       })
     })
   }
@@ -41,25 +51,27 @@ class App extends Component {
   componentWillUnmount() {
     this.authListener();
   }
-  */
+  
   render(){
+    const {currentUser} = this.state; /* to maintain user state in each page */
+
     return (
       <div className="App">
   
           
           <Switch>
             <Route exact path = '/' render = {() => (
-              <MainLayout>
+              <MainLayout currentUser = {currentUser}>
                 <Homepage />
               </MainLayout>
               )} />
             <Route path='/registration' render = {() => (
-              <MainLayout>
+              <MainLayout currentUser = {currentUser}>
                 <Registration />
               </MainLayout>
               )} /> 
-            <Route path='/login' render = {() => (
-                <MainLayout>
+            <Route path='/login' render = {() => currentUser ? <Redirect to = './' />:(
+                <MainLayout currentUser = {currentUser}>
                   <Login />
                 </MainLayout>
                 )} /> 
